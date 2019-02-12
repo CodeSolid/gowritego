@@ -2,7 +2,9 @@
 
 # main.go
 
-This comment will turn into markdown.
+This is the main file for gowritego, a simple tool that reads special comment blocks
+like this in a golang program to allow.  For more information, see the code and the readme
+at [https://github.com/CodeSolid/gowritego](https://github.com/CodeSolid/gowritego)
 
 #*/
 package main
@@ -10,22 +12,9 @@ package main
 import (
 	"fmt"
 	"github.com/CodeSolid/gowritego/internal/gowritego"
-	"github.com/spf13/viper"
 	"os"
-
 )
 
-// Currently not needed
-func loadViperConfig() {
-	viper.SetConfigName("config")
-	viper.AddConfigPath(".")
-	err := viper.ReadInConfig()
-	if err != nil {
-		panic(fmt.Errorf("Fatal error config file: %s \n", err))
-	}
-	fmt.Println(viper.Get("greeting"))
-
-}
 
 func main() {
 	argsWithoutProg := os.Args[1:]
@@ -37,12 +26,13 @@ func main() {
 	output := os.Args[2]
 
 	fmt.Printf("Processing %v to %v\n", input, output)
-
+	// Read input file to blocks of either markdown or code
 	blocks, err := gowritego.ReadFile(input)
 	if err != nil {
 		panic(err)
 	}
 
+	// Render and write the markdown
 	markdown := gowritego.BlocksToMarkdown(blocks)
 	_, err = gowritego.WriteFile(output, markdown)
 	if err != nil {

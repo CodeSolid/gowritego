@@ -1,23 +1,23 @@
 package gowritego
 
 import (
-	"fmt"
+	"testing"
+	"os"
 )
 
-func ExampleReadFileCanBeCalled() {
-	blocks, err := ReadFile("./file_reader_test.go")
-	fmt.Printf("%v\n", err == nil)
-	fmt.Printf("%v\n", len(blocks))
-	// Output:
-	// true
-	// 1
+
+func TestReadFileCanReadTestFile(t  *testing.T) {
+	blocks, _:= ReadFile(filename)
+	if len(blocks) != 2 {
+		t.Errorf("For %v, expected %v blocks, actual was %v\n", filename, 2, len(blocks))
+	}
 }
 
-func ExampleNonExistentFilenameCreatesError() {
-	_, err := ReadFile("./somefile.go")
-	fmt.Printf("%v\n", err != nil)
-	fmt.Printf("%v\n", err)
-	// Output:
-	// true
-	// stat ./somefile.go: no such file or directory
+func TestNonExistentFilenameCreatesError(t  *testing.T) {
+	_, err := ReadFile("bogus_file.go")
+	if ! os.IsNotExist(err) {
+		t.Errorf("Expected ErrNotExist, got %v", err)
+	}
 }
+
+
