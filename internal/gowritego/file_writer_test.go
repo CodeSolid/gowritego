@@ -43,7 +43,3 @@ func TestWriteFileReturnsErrExistIfFileExists(t *testing.T) {
 }
 
 
-func TestDirectoryDisplay(t *testing.T) {
-	wd, _ := os.Getwd()
-	t.Log(wd)
-}
